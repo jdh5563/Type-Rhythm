@@ -263,3 +263,16 @@ h3.domoAge {
 .domo:last-child {
     margin-bottom:10px;
 }
+
+
+
+/* STYLES THAT I HAVE WRITTEN MYSELF */
+#canvas-container {
+    width: 100%;
+    text-align: center;
+}
+
+#canvas {
+    display: inline;
+    margin: 1rem 0;
+}

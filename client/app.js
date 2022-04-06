@@ -9,8 +9,7 @@ const init = () => {
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.height);
 
-  //canvas.style.display = 'none';
-  //canvas.hidden = true;
+  canvas.style.display = 'none';
 }
 
 module.exports = {

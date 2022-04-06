@@ -4,16 +4,14 @@ const createRace = e => {
     e.preventDefault();
 
     ReactDOM.render(<Lobby players={[]}/>,
-        document.getElementById('.game-content'));
+        document.getElementById('game-content'));
 };
 
-const startRace = e => {
+const startRace = async e => {
     e.preventDefault();
 
-    ReactDOM.render(<Game/>,
-        document.getElementById('.game-content'));
-
-    //ReactDOM.unmountComponentAtNode('lobby-container');
+    await ReactDOM.render(<Game/>,
+        document.getElementById('game-content'));
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -81,7 +79,7 @@ const Game = props => {
 
 const init = async () => {
     ReactDOM.render(<LobbyCreate/>,
-        document.getElementById('lobby-container'));
+        document.getElementById('game-content'));
 };
 
 window.onload = init;

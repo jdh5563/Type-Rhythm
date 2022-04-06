@@ -267,17 +267,7 @@ h3.domoAge {
 
 
 /* STYLES THAT I HAVE WRITTEN MYSELF */
-#lobby-container{
+.game-content{
     width: 100%;
     text-align: center;
 }
-
-#canvas-container {
-    width: 100%;
-    text-align: center;
-}
-
-/* #canvas {
-    display: inline;
-    margin: 1rem 0;
-} */

@@ -4,14 +4,14 @@ const createRace = e => {
     e.preventDefault();
 
     ReactDOM.render(<Lobby players={[]}/>,
-        document.getElementById('lobby-container'));
+        document.getElementById('.game-content'));
 };
 
 const startRace = e => {
     e.preventDefault();
 
     ReactDOM.render(<Game/>,
-        document.getElementById('canvas-container'));
+        document.getElementById('.game-content'));
 
     //ReactDOM.unmountComponentAtNode('lobby-container');
 

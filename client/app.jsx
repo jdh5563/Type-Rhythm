@@ -1,7 +1,9 @@
-//const app = require('./app.js');
+const app = require('./app.js');
 
 const createRace = e => {
     e.preventDefault();
+
+    app.createLobby();
 
     ReactDOM.render(<Lobby players={[]}/>,
         document.getElementById('game-content'));
@@ -12,16 +14,8 @@ const startRace = async e => {
 
     await ReactDOM.render(<Game/>,
         document.getElementById('game-content'));
-
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
     
-    canvas.width = window.innerWidth * 0.6;
-    canvas.height = canvas.clientWidth * 0.69;
-    
-    ctx.save();
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, canvas.clientWidth, canvas.height);
+    app.init();
 }
 
 const LobbyCreate = props => {

@@ -14,8 +14,7 @@ const CarSchema = new mongoose.Schema({
 });
 
 CarSchema.statics.toAPI = (doc) => ({
-  name: doc.name,
-  age: doc.age,
+  skin: doc.skin,
 });
 
 CarSchema.statics.findByOwner = (ownerId, callback) => {

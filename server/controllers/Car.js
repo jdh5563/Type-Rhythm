@@ -27,14 +27,12 @@ const makeCar = async (req, res) => {
   return res.status(201).json({ skin: car.skin });
 };
 
-const getCar = (req, res) => CarModel.findByOwner(req.session.account._id, (err, docs) => {
-  if (err) {
-    console.log(err);
-    return res.status(400).json({ error: 'An error occurred!' });
-  }
+const getCar = async (req, res) => { 
+  const existingCarList = await CarModel.findExistingCar(req.session.account._id);
+  const existingCar = existingCarList[existingCarList.length - 1]._doc;
 
-  return res.json({ car: docs });
-});
+  return res.json({ existingCar });
+};
 
 module.exports = {
   carPage,

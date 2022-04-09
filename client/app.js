@@ -14,10 +14,10 @@ const init = () => {
 }
 
 const createLobby = async () => {
-  const response = await fetch('/getCar');
-  const car = await response.json();
-
-  console.log(car.existingCar.owner);
+  const usernameResponse = await fetch('/getUsername');
+  const usernameData = await usernameResponse.json().then(username => username);
+  
+  return usernameData.username;
 }
 
 module.exports = {

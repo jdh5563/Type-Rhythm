@@ -55,6 +55,8 @@ const signup = async (req, res) => {
   }
 };
 
+const getUsername = (req, res) => res.json({ username: req.session.account.username });
+
 const getToken = (req, res) => res.json({ csrfToken: req.csrfToken() });
 
 module.exports = {
@@ -63,4 +65,5 @@ module.exports = {
   login,
   signup,
   getToken,
+  getUsername,
 };

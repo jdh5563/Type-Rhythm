@@ -1,11 +1,11 @@
 const app = require('./app.js');
 
-const createRace = e => {
+const createRace = async e => {
     e.preventDefault();
 
-    app.createLobby();
+    const lobbyOwner = await app.createLobby();
 
-    ReactDOM.render(<Lobby players={[]}/>,
+    ReactDOM.render(<Lobby players={[lobbyOwner]}/>,
         document.getElementById('game-content'));
 };
 
@@ -42,12 +42,12 @@ const LobbyCreate = props => {
 };
 
 const Lobby = props => {
-    // List of players (props.players)
-    // Start button (input type=button)
     const players = props.players.map(player => {
-        <div key={player._id}>
-            <h3>{player.username}</h3>
-        </div>
+        return (
+            <div key={player}>
+                <h3>{player}</h3>
+            </div>
+        );
     });
 
     return(

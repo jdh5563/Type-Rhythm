@@ -3,6 +3,7 @@ const mid = require('./middleware');
 
 const router = (app) => {
   app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
+  app.get('/getUsername', mid.requiresLogin, controllers.Account.getUsername);
   app.get('/getDomos', mid.requiresLogin, controllers.Domo.getDomos);
   app.get('/getCar', mid.requiresLogin, controllers.Car.getCar);
 

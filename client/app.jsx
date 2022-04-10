@@ -2,7 +2,7 @@ const app = require('./app.js');
 
 const createRace = async e => {
     e.preventDefault();
-
+    
     const lobbyInfo = await app.createLobby(e.target.querySelector('#_csrf').value);
 
     ReactDOM.render(<Lobby players={[lobbyInfo.players]} raceCode={lobbyInfo.raceCode}/>,
@@ -62,7 +62,7 @@ const LobbyCreate = props => {
 };
 
 const Lobby = props => {
-    console.log(players);
+    console.log(props.players);
     const players = props.players.map(player => {
         return (
             <div key={player.username}>

@@ -24,7 +24,6 @@ const joinLobby = (req, res) => {
     }
 
     lobbies[raceCode].players += username;
-
     return res.status(201).json(lobbies[raceCode]);
 };
 

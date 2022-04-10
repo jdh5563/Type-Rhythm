@@ -12,10 +12,12 @@ const createRace = async e => {
 const joinRace = async e => {
     e.preventDefault();
 
-    const lobbyInfo = await app.joinLobby(e.target.querySelector('#raceCode'), e.target.querySelector('#_csrf').value);
+    const lobbyInfo = await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
 
-    ReactDOM.render(<Lobby players={[lobbyInfo.players]} raceCode={lobbyInfo.raceCode}/>,
-        document.getElementById('game-content'));
+    if(!lobbyInfo.error){
+        ReactDOM.render(<Lobby players={[lobbyInfo.players]} raceCode={lobbyInfo.raceCode}/>,
+            document.getElementById('game-content'));
+    }
 };
 
 const startRace = async e => {

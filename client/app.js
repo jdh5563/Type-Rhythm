@@ -44,8 +44,8 @@ const joinLobby = async (raceCode, _csrf) => {
   const usernameResponse = await fetch('/getUsername');
   const usernameData = await usernameResponse.json().then(username => username);
 
-  const lobbyInfo = { username: usernameData, raceCode, _csrf };
-
+  const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
+  
   const lobbyResponse = await fetch('/joinLobby', {
     method: 'POST',
     headers: {
@@ -53,6 +53,7 @@ const joinLobby = async (raceCode, _csrf) => {
     },
     body: JSON.stringify(lobbyInfo),
   });
+
   const lobbyJSON = await lobbyResponse.json();
 
   return lobbyJSON;

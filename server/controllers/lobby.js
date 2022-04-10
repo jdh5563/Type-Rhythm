@@ -22,9 +22,8 @@ const joinLobby = (req, res) => {
     if(!lobbies[raceCode]){
         return res.status(400).json({error: "No room with that code exists!"});
     }
-    console.log(lobbies[raceCode]);
+    
     lobbies[raceCode].players[username] = username;
-    console.log(lobbies[raceCode]);
     return res.status(201).json(lobbies[raceCode]);
 };
 

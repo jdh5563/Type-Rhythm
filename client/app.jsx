@@ -5,7 +5,7 @@ const createRace = async e => {
     
     const lobbyInfo = await app.createLobby(e.target.querySelector('#_csrf').value);
 
-    ReactDOM.render(<Lobby players={[lobbyInfo.players]} raceCode={lobbyInfo.raceCode}/>,
+    ReactDOM.render(<Lobby players={lobbyInfo.players} raceCode={lobbyInfo.raceCode}/>,
         document.getElementById('game-content'));
 };
 
@@ -15,7 +15,7 @@ const joinRace = async e => {
     const lobbyInfo = await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
 
     if(!lobbyInfo.error){
-        ReactDOM.render(<Lobby players={[lobbyInfo.players]} raceCode={lobbyInfo.raceCode}/>,
+        ReactDOM.render(<Lobby players={lobbyInfo.players} raceCode={lobbyInfo.raceCode}/>,
             document.getElementById('game-content'));
     }
 };
@@ -63,13 +63,14 @@ const LobbyCreate = props => {
 
 const Lobby = props => {
     console.log(props.players);
-    const players = props.players.map(player => {
-        return (
-            <div key={player.username}>
-                <h3>{player.username}</h3>
+    const players = [];
+    for(let key of Object.keys(props.players)){
+        players.push(
+            <div key={key}>
+                <h3>{props.players[key]}</h3>
             </div>
         );
-    });
+    }
 
     return(
         <div>

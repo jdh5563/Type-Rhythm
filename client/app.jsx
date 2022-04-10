@@ -3,9 +3,18 @@ const app = require('./app.js');
 const createRace = async e => {
     e.preventDefault();
 
-    const lobbyOwner = await app.createLobby();
+    const lobbyInfo = await app.createLobby(e.target.querySelector('#_csrf').value);
 
-    ReactDOM.render(<Lobby players={[lobbyOwner]}/>,
+    ReactDOM.render(<Lobby players={[lobbyInfo.players]} raceCode={lobbyInfo.raceCode}/>,
+        document.getElementById('game-content'));
+};
+
+const joinRace = async e => {
+    e.preventDefault();
+
+    const lobbyInfo = await app.joinLobby(e.target.querySelector('#raceCode'), e.target.querySelector('#_csrf').value);
+
+    ReactDOM.render(<Lobby players={[lobbyInfo.players]} raceCode={lobbyInfo.raceCode}/>,
         document.getElementById('game-content'));
 };
 
@@ -22,8 +31,8 @@ const LobbyCreate = props => {
     return (
         <div>
             <h1>Join a Race!</h1>
-            <form id="lobbyForm"
-            name="lobbyForm"
+            <form id="createForm"
+            name="createForm"
             onSubmit={createRace}
             action="/createRace"
             method="POST"
@@ -31,10 +40,19 @@ const LobbyCreate = props => {
                 <div>
                     <input type='submit' value='Create Race'></input>
                 </div>
+                <input id='_csrf' type='hidden' name='_csrf' value={props.csrf} />
+            </form>
+            <form id='joinForm'
+            name="joinForm"
+            onSubmit={joinRace}
+            action="/joinRace"
+            method="POST"
+            >
                 <div>
-                    <input type='text' placeholder='Race Code'></input>
+                    <input id='raceCode' type='text' placeholder='Race Code'></input>
                     <input type='submit' value='Join Race'></input>
                 </div>   
+                <input id='_csrf' type='hidden' name='_csrf' value={props.csrf} />
             </form>
         </div>
         
@@ -44,8 +62,8 @@ const LobbyCreate = props => {
 const Lobby = props => {
     const players = props.players.map(player => {
         return (
-            <div key={player}>
-                <h3>{player}</h3>
+            <div key={player.username}>
+                <h3>{player.username}</h3>
             </div>
         );
     });
@@ -53,6 +71,7 @@ const Lobby = props => {
     return(
         <div>
             {players}
+            <div>Race Code: {props.raceCode}</div>
             <form id='raceForm'
             name='raceForm'
             onSubmit={startRace}
@@ -72,7 +91,10 @@ const Game = props => {
 };
 
 const init = async () => {
-    ReactDOM.render(<LobbyCreate/>,
+    const response = await fetch('/getToken');
+    const data = await response.json();
+
+    ReactDOM.render(<LobbyCreate csrf={data.csrfToken}/>,
         document.getElementById('game-content'));
 };
 

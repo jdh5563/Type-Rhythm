@@ -25,7 +25,7 @@ CarSchema.statics.findByOwner = (ownerId, callback) => {
   return CarModel.find(search).select('skin').lean().exec(callback);
 };
 
-CarSchema.statics.findExistingCar = ownerId => {
+CarSchema.statics.findExistingCar = (ownerId) => {
   const search = {
     owner: mongoose.Types.ObjectId(ownerId),
   };

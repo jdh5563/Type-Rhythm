@@ -15,10 +15,9 @@ const makeCar = async (req, res) => {
   const existingCarList = await CarModel.findExistingCar(carData.owner);
   const existingCar = existingCarList[existingCarList.length - 1];
 
-  if(!existingCar) {
+  if (!existingCar) {
     car = new Car(carData);
-  }
-  else {
+  } else {
     car = new Car(existingCar);
     car.skin = carData.skin;
   }
@@ -27,7 +26,7 @@ const makeCar = async (req, res) => {
   return res.status(201).json({ skin: car.skin });
 };
 
-const getCar = async (req, res) => { 
+const getCar = async (req, res) => {
   const existingCarList = await CarModel.findExistingCar(req.session.account._id);
   const existingCar = existingCarList[existingCarList.length - 1]._doc;
 

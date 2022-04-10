@@ -20,6 +20,9 @@ const router = (app) => {
   app.get('/car', mid.requiresLogin, controllers.Car.carPage);
   app.post('/car', mid.requiresLogin, controllers.Car.makeCar);
 
+  app.post('/createLobby', mid.requiresLogin, controllers.Lobby.createLobby);
+  app.post('/joinLobby', mid.requiresLogin, controllers.Lobby.joinLobby);
+
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 

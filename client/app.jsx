@@ -62,6 +62,7 @@ const LobbyCreate = props => {
 };
 
 const Lobby = props => {
+    console.log(players);
     const players = props.players.map(player => {
         return (
             <div key={player.username}>

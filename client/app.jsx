@@ -1,28 +1,20 @@
 const app = require('./app.js');
 
-// Initializes socket.io
-// With this, users can now connect/disconnect
-const socket = io();
-
-socket.on('joinedLobby', lobbyInfo => {
-  const lobbyJSON = sendLobbyPost(lobbyInfo);
-
-  renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
-});
-  
-const sendLobbyPost = async lobbyInfo => {
+app.socket.on('joinedLobby', async lobbyInfo => {
     const lobbyResponse = await fetch('/joinLobby', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
         body: JSON.stringify(lobbyInfo),
-    });
+      });
+    
+      const lobbyJSON = await lobbyResponse.json();
 
-    const lobbyJSON = await lobbyResponse.json();
-
-    return lobbyJSON;
-};
+      if(!lobbyJSON.error){
+        renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
+    }
+});
 
 const createRace = async e => {
     e.preventDefault();
@@ -31,28 +23,12 @@ const createRace = async e => {
 
     ReactDOM.render(<Lobby players={lobbyInfo.players} raceCode={lobbyInfo.raceCode}/>,
         document.getElementById('game-content'));
-
-    app.init();
 };
 
 const joinRace = async e => {
     e.preventDefault();
 
-    //await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
-    const usernameResponse = await fetch('/getUsername');
-    const usernameData = await usernameResponse.json().then(username => username);
-  
-    const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
-  
-    // const lobbyJSON = sendLobbyPost(lobbyInfo);
-  
-    console.log('about to emit');
-    socket.emit('joinedLobby', lobbyInfo);
-  
-    //return lobbyJSON;
-    // if(!lobbyInfo.error){
-    //     renderLobby(lobbyInfo.players, lobbyInfo.raceCode);
-    // }
+    await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
 };
 
 const startRace = async e => {
@@ -65,7 +41,6 @@ const startRace = async e => {
 }
 
 const renderLobby = (players, raceCode) => {
-    console.log('in render lobby method');
     ReactDOM.render(<Lobby players={players} raceCode={raceCode}/>,
         document.getElementById('game-content'));
 };

@@ -1,10 +1,6 @@
 // // Initializes socket.io
 // // With this, users can now connect/disconnect
-// const socket = io();
-
-// socket.on('joinedLobby', lobbyInfo => {
-//   const lobbyJSON = sendLobbyPost(lobbyInfo);
-// });
+const socket = io();
 
 let canvas;
 let ctx;
@@ -51,19 +47,19 @@ const createLobby = async _csrf => {
   return lobbyJSON;
 };
 
-// const joinLobby = async (raceCode, _csrf, render) => {
-//   const usernameResponse = await fetch('/getUsername');
-//   const usernameData = await usernameResponse.json().then(username => username);
+const joinLobby = async (raceCode, _csrf, render) => {
+  const usernameResponse = await fetch('/getUsername');
+  const usernameData = await usernameResponse.json().then(username => username);
 
-//   const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
+  const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
 
-//   // const lobbyJSON = sendLobbyPost(lobbyInfo);
+  // const lobbyJSON = sendLobbyPost(lobbyInfo);
 
-//   console.log('about to emit');
-//   socket.emit('joinedLobby', lobbyInfo);
+  console.log('about to emit');
+  socket.emit('joinedLobby', lobbyInfo);
 
-//   //return lobbyJSON;
-// };
+  //return lobbyJSON;
+};
 
 // const sendLobbyPost = async lobbyInfo => {
 //   const lobbyResponse = await fetch('/joinLobby', {
@@ -82,5 +78,6 @@ const createLobby = async _csrf => {
 module.exports = {
   init,
   createLobby,
-  // joinLobby,
+  joinLobby,
+  socket,
 }

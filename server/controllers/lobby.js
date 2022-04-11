@@ -5,12 +5,12 @@ const createLobby = (req, res) => {
     const raceCode = req.body.raceCode;
 
     lobbies[raceCode] = {
-        players: {
-            username,
-        },
+        players: {},
 
         raceCode
     };
+
+    lobbies[raceCode].players[username] = { username, owner: true };
 
     return res.status(201).json(lobbies[raceCode]);
 };
@@ -20,13 +20,11 @@ const joinLobby = (req, res) => {
     let raceCode = req.body.raceCode;
     raceCode = raceCode.toUpperCase();
 
-    console.log(raceCode);
-
     if(!lobbies[raceCode]){
         return res.status(400).json({error: "No room with that code exists!"});
     }
 
-    lobbies[raceCode].players[username] = username;
+    lobbies[raceCode].players[username] = { username, owner: false };
     return res.status(201).json(lobbies[raceCode]);
 };
 

@@ -84,7 +84,6 @@ io.on('connection', socket => {
   console.log('a user connected');
 
   socket.on('joinedLobby', lobbyInfo => {
-    console.log('in server');
     io.emit('joinedLobby', lobbyInfo);
   });
 

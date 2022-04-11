@@ -21,8 +21,7 @@ const createRace = async e => {
     
     const lobbyInfo = await app.createLobby(e.target.querySelector('#_csrf').value);
 
-    ReactDOM.render(<Lobby players={lobbyInfo.players} raceCode={lobbyInfo.raceCode}/>,
-        document.getElementById('game-content'));
+    renderLobby(lobbyInfo.players, lobbyInfo.raceCode);
 };
 
 const joinRace = async e => {
@@ -40,9 +39,16 @@ const startRace = async e => {
     app.init();
 }
 
-const renderLobby = (players, raceCode) => {
+const renderLobby = async (players, raceCode) => {
     ReactDOM.render(<Lobby players={players} raceCode={raceCode}/>,
         document.getElementById('game-content'));
+
+    const usernameResponse = await fetch('/getUsername');
+    const usernameData = await usernameResponse.json().then(username => username);
+
+    console.log(players[usernameData.username]);
+
+    if(!players[usernameData.username].owner) document.getElementById('startButton').type = 'hidden';
 };
 
 const LobbyCreate = props => {
@@ -78,12 +84,11 @@ const LobbyCreate = props => {
 };
 
 const Lobby = props => {
-    console.log(props.players);
     const players = [];
     for(let key of Object.keys(props.players)){
         players.push(
             <div key={key}>
-                <h3>{props.players[key]}</h3>
+                <h3>{props.players[key].username}</h3>
             </div>
         );
     }
@@ -98,7 +103,7 @@ const Lobby = props => {
             action='/startRace'
             method='POST'
             >
-                <input type='submit' value='Start Race'></input>
+                <input id='startButton' type='submit' value='Start Race'></input>
             </form>
         </div>
     );

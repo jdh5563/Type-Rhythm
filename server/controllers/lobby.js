@@ -17,12 +17,15 @@ const createLobby = (req, res) => {
 
 const joinLobby = (req, res) => {
     const username = req.body.username;
-    const raceCode = req.body.raceCode;
+    let raceCode = req.body.raceCode;
+    raceCode = raceCode.toUpperCase();
+
+    console.log(raceCode);
 
     if(!lobbies[raceCode]){
         return res.status(400).json({error: "No room with that code exists!"});
     }
-    
+
     lobbies[raceCode].players[username] = username;
     return res.status(201).json(lobbies[raceCode]);
 };

@@ -14,6 +14,9 @@ const csrf = require('csurf');
 
 const router = require('./router.js');
 
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/Domomaker';
@@ -74,7 +77,23 @@ app.use((err, req, res, next) => {
 
 router(app);
 
-app.listen(port, (err) => {
+const httpServer = createServer(app);
+const io = new Server(httpServer, { /* options */ });
+
+io.on('connection', socket => {
+  console.log('a user connected');
+
+  socket.on('joinedLobby', lobbyInfo => {
+    console.log('in server');
+    io.emit('joinedLobby', lobbyInfo);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+httpServer.listen(port, err => {
   if (err) throw err;
   console.log(`Listening on port ${port}`);
 });

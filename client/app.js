@@ -84,8 +84,6 @@ const init = () => {
   for(let i = 0; i < playerKeys.length; i++){
     const image = new Image();
     image.onload = () => {
-      const imgElement = document.createElement('img');
-      imgElement.src = lobby.players[playerKeys[i]].skin;
       ctx.drawImage(image, 0, i * canvas.height / playerKeys.length, 50, 50);
     };
     image.src = lobby.players[playerKeys[i]].skin;

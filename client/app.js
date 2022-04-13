@@ -51,7 +51,17 @@ const joinLobby = async (raceCode, _csrf) => {
 
   const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
 
-  socket.emit('joinedLobby', lobbyInfo);
+  const lobbyResponse = await fetch('/joinLobby', {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(lobbyInfo),
+  });
+
+  const lobbyJSON = await lobbyResponse.json();
+
+  socket.emit('joinedLobby', lobbyJSON);
 };
 
 module.exports = {

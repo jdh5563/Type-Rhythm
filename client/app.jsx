@@ -1,18 +1,17 @@
 const app = require('./app.js');
 
-app.socket.on('joinedLobby', async lobbyInfo => {
-    const lobbyResponse = await fetch('/joinLobby', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(lobbyInfo),
-      });
-    
-      const lobbyJSON = await lobbyResponse.json();
-
-      if(!lobbyJSON.error){
+app.socket.on('joinedLobby', async lobbyJSON => {
+    if(!lobbyJSON.error){
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
+    }
+    else{
+        const Error = props => {
+            return (
+                <h1>{props.error}</h1>
+            );
+        }
+
+        ReactDOM.render(<Error error={lobbyJSON.error} />);
     }
 });
 

@@ -31,8 +31,7 @@ const getCar = async (req, res) => {
   const existingCarList = await CarModel.findExistingCar(req.session.account._id);
 
   if (existingCarList && existingCarList[existingCarList.length - 1]) {
-    const { skin } = existingCarList[existingCarList.length - 1].skin;
-
+    const { skin } = existingCarList[existingCarList.length - 1];
     return res.json({ skin });
   }
 
@@ -42,6 +41,8 @@ const getCar = async (req, res) => {
   });
 
   await car.save();
+  console.log(car);
+  console.log(car.skin);
   return res.status(201).json({ skin: car.skin });
 };
 

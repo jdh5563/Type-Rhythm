@@ -1,5 +1,7 @@
 let lobby;
 
+const setLobby = lobbyJSON => { lobby = lobbyJSON; console.log(lobby); }
+
 //#region SOCKET IO CODE
 
 // Initializes socket.io
@@ -33,7 +35,6 @@ const createLobby = async _csrf => {
   });
 
   lobby = await lobbyResponse.json();
-
   return lobby;
 };
 
@@ -56,7 +57,7 @@ const joinLobby = async (raceCode, _csrf) => {
 
   lobby = await lobbyResponse.json();
 
-  socket.emit('joinedLobby', lobby);
+  socket.emit('joinedLobby', lobby, setLobby);
 };
 
 //#endregion

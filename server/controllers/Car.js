@@ -2,7 +2,6 @@ const models = require('../models');
 const CarModel = require('../models/Car');
 
 const { Car } = models;
-let car;
 
 const carPage = (req, res) => res.render('car');
 
@@ -14,6 +13,8 @@ const makeCar = async (req, res) => {
 
   const existingCarList = await CarModel.findExistingCar(carData.owner);
   const existingCar = existingCarList[existingCarList.length - 1];
+
+  let car;
 
   if (!existingCar) {
     car = new Car(carData);
@@ -35,7 +36,13 @@ const getCar = async (req, res) => {
     return res.json({ skin });
   }
 
-  return makeCar(req, res);
+  const car = new Car({
+    skin: '/assets/img/cardefault.png',
+    owner: req.session.account._id,
+  });
+
+  await car.save();
+  return res.status(201).json({ skin: car.skin });
 };
 
 module.exports = {

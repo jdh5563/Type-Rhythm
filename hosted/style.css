@@ -274,4 +274,5 @@ h3.domoAge {
 
 canvas {
     margin: 1rem 0;
+    border: solid gray 1px;
 }

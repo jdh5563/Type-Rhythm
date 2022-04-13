@@ -6,7 +6,12 @@ const handleCar = e => {
     const skin = e.target.querySelector('[name="skins"]:checked').value;
     const _csrf = e.target.querySelector('#_csrf').value;
 
-    helper.sendCarPost(e.target.action, {skin, _csrf}, loadCarFromServer);
+    helper.sendCarPost(e.target.action, {skin, _csrf}, car => {
+        ReactDOM.render(
+            <CarImage skin={car.skin} />,
+            document.getElementById('carSection')
+        );
+    });
 
     return false;
 };
@@ -31,7 +36,6 @@ const CarForm = props => {
 };
 
 const CarImage = props => {
-    console.log(props.skin);
     const carImage = 
                 <img src={props.skin || '/assets/img/cardefault.png'} alt='player car' className='playerCar' />;
 
@@ -47,7 +51,7 @@ const loadCarFromServer = async () => {
     const data = await response.json();
 
     ReactDOM.render(
-        <CarImage skin={data.car[data.car.length - 1].skin} />,
+        <CarImage skin={data.skin} />,
         document.getElementById('carSection')
     );
 };

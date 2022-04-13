@@ -12,10 +12,9 @@ const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
 const csrf = require('csurf');
 
+const { createServer } = require('http');
+const { Server } = require('socket.io');
 const router = require('./router.js');
-
-const { createServer } = require("http");
-const { Server } = require("socket.io");
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -54,7 +53,7 @@ app.use(session({
   store: new RedisStore({
     client: redisClient,
   }),
-  secret: 'Domo Arigato',
+  secret: 'Rhythm Type',
   resave: true,
   saveUninitialized: true,
   cookie: {
@@ -80,10 +79,10 @@ router(app);
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('joinedLobby', lobbyInfo => {
+  socket.on('joinedLobby', (lobbyInfo) => {
     io.emit('joinedLobby', lobbyInfo);
   });
 
@@ -92,7 +91,7 @@ io.on('connection', socket => {
   });
 });
 
-httpServer.listen(port, err => {
+httpServer.listen(port, (err) => {
   if (err) throw err;
   console.log(`Listening on port ${port}`);
 });

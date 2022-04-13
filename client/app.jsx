@@ -45,8 +45,6 @@ const renderLobby = async (players, raceCode) => {
     const usernameResponse = await fetch('/getUsername');
     const usernameData = await usernameResponse.json().then(username => username);
 
-    console.log(players[usernameData.username]);
-
     if(!players[usernameData.username].owner) document.getElementById('startButton').type = 'hidden';
 };
 

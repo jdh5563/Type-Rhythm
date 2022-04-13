@@ -28,9 +28,14 @@ const makeCar = async (req, res) => {
 
 const getCar = async (req, res) => {
   const existingCarList = await CarModel.findExistingCar(req.session.account._id);
-  const existingCar = existingCarList[existingCarList.length - 1]._doc;
 
-  return res.json({ existingCar });
+  if (existingCarList) {
+    const { skin } = existingCarList[existingCarList.length - 1]._doc;
+
+    return res.json({ skin });
+  }
+
+  return makeCar(req, res);
 };
 
 module.exports = {

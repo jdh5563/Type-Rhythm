@@ -89,6 +89,7 @@ const init = () => {
       ctx.drawImage(carSkins[i], 0, i * canvas.height / playerKeys.length, 50, 50);
     };
     carSkins[i].src = lobby.players[playerKeys[i]].skin;
+    console.log(carSkins[i].onload);
   }
 
   window.addEventListener('resize', () => {

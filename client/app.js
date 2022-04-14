@@ -86,7 +86,7 @@ const init = () => {
   for(let i = 0; i < playerKeys.length; i++){
     carSkins.push(new Image());
     carSkins[i].onload = () => {
-      ctx.drawImage(image, 0, i * canvas.height / playerKeys.length, 50, 50);
+      ctx.drawImage(carSkins[i], 0, i * canvas.height / playerKeys.length, 50, 50);
     };
     carSkins[i].src = lobby.players[playerKeys[i]].skin;
   }

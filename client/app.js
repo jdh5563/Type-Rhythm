@@ -82,6 +82,8 @@ const init = () => {
   ctx.restore();
 
   const playerKeys = Object.keys(lobby.players);
+  console.log(lobby.players);
+  console.log(playerKeys.length);
 
   for(let i = 0; i < playerKeys.length; i++){
     carSkins.push(new Image());

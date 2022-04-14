@@ -67,6 +67,8 @@ const joinLobby = async (raceCode, _csrf) => {
 let canvas;
 let ctx;
 
+const carSkins = [];
+
 const init = () => {
   canvas = document.getElementById('canvas');
   ctx = canvas.getContext('2d');
@@ -82,12 +84,11 @@ const init = () => {
   const playerKeys = Object.keys(lobby.players);
 
   for(let i = 0; i < playerKeys.length; i++){
-    const image = new Image();
-    image.onload = () => {
-      console.log('loading image');
+    carSkins.push(new Image());
+    carSkins[i].onload = () => {
       ctx.drawImage(image, 0, i * canvas.height / playerKeys.length, 50, 50);
     };
-    image.src = lobby.players[playerKeys[i]].skin;
+    carSkins[i].src = lobby.players[playerKeys[i]].skin;
   }
 
   window.addEventListener('resize', () => {

@@ -16,7 +16,7 @@ app.socket.on('joinedLobby', async lobbyJSON => {
     }
 });
 
-app.socket.on('startedRace', () => {
+app.socket.on('startedRace', async () => {
     await ReactDOM.render(<Game/>,
         document.getElementById('game-content'));
 

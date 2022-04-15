@@ -57,9 +57,26 @@ const joinLobby = async (raceCode, _csrf) => {
 
   lobby = await lobbyResponse.json();
 
-  console.log(lobby);
+  socket.emit('changedLobby', lobby);
+};
 
-  socket.emit('joinedLobby', lobby);
+const leaveLobby = async (raceCode, _csrf) => {
+  const usernameResponse = await fetch('/getUsername');
+  const usernameData = await usernameResponse.json().then(username => username);
+
+  const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
+
+  const lobbyResponse = await fetch('/joinLobby', {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(lobbyInfo),
+  });
+
+  lobby = await lobbyResponse.json();
+
+  socket.emit('changedLobby', lobby);
 };
 
 //#endregion
@@ -105,6 +122,7 @@ module.exports = {
   init,
   createLobby,
   joinLobby,
+  leaveLobby,
   setLobby,
   socket,
 }

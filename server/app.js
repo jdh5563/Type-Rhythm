@@ -82,8 +82,8 @@ const io = new Server(httpServer, { /* options */ });
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('joinedLobby', (lobbyInfo) => {
-    io.emit('joinedLobby', lobbyInfo);
+  socket.on('changedLobby', (lobbyInfo) => {
+    io.emit('changedLobby', lobbyInfo);
   });
 
   socket.on('startedRace', () => {

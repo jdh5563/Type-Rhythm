@@ -30,7 +30,17 @@ const joinLobby = (req, res) => {
   return res.status(201).json(lobbies[raceCode]);
 };
 
+const leaveLobby = (req, res) => {
+  const { username } = req.body;
+  let { raceCode } = req.body;
+  raceCode = raceCode.toUpperCase();
+
+  delete lobbies[raceCode].players[username];
+  return res.status(201).json(lobbies[raceCode]);
+}
+
 module.exports = {
   createLobby,
   joinLobby,
+  leaveLobby,
 };

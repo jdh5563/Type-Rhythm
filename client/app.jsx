@@ -1,6 +1,6 @@
 const app = require('./app.js');
 
-app.socket.on('joinedLobby', async lobbyJSON => {
+app.socket.on('changedLobby', async lobbyJSON => {
     if(!lobbyJSON.error){
         app.setLobby(lobbyJSON);
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
@@ -37,7 +37,13 @@ const joinRace = async e => {
     await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
 };
 
-const startRace = async e => {
+const leaveRace = async e => {
+    e.preventDefault();
+
+    await app.leaveLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
+}
+
+const startRace = e => {
     e.preventDefault();
     
     app.socket.emit('startedRace');
@@ -106,6 +112,14 @@ const Lobby = props => {
             method='POST'
             >
                 <input id='startButton' type='submit' value='Start Race'></input>
+            </form>
+            <form id='leaveForm'
+            name='leaveForm'
+            onSubmit={leaveRace}
+            action='/leaveRace'
+            method='POST'
+            >
+                <input id='leaveButton' type='submit' value='Leave Lobby'></input>
             </form>
         </div>
     );

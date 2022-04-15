@@ -1,6 +1,6 @@
 let lobby;
 
-const setLobby = lobbyJSON => { lobby = lobbyJSON; console.log(lobby); }
+const setLobby = lobbyJSON => { lobby = lobbyJSON; console.log('In setLobby' + lobby); }
 
 //#region SOCKET IO CODE
 
@@ -57,6 +57,8 @@ const joinLobby = async (raceCode, _csrf) => {
 
   lobby = await lobbyResponse.json();
 
+  console.log(lobby);
+
   socket.emit('joinedLobby', lobby, setLobby);
 };
 
@@ -82,8 +84,6 @@ const init = () => {
   ctx.restore();
 
   const playerKeys = Object.keys(lobby.players);
-  console.log(lobby.players);
-  console.log(playerKeys.length);
 
   for(let i = 0; i < playerKeys.length; i++){
     carSkins.push(new Image());
@@ -91,7 +91,6 @@ const init = () => {
       ctx.drawImage(carSkins[i], 0, i * canvas.height / playerKeys.length, 50, 50);
     };
     carSkins[i].src = lobby.players[playerKeys[i]].skin;
-    console.log(carSkins[i].onload);
   }
 
   window.addEventListener('resize', () => {

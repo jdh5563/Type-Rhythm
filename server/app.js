@@ -86,6 +86,10 @@ io.on('connection', (socket) => {
     io.emit('joinedLobby', lobbyInfo);
   });
 
+  socket.on('startedRace', () => {
+    io.emit('startedRace');
+  });
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

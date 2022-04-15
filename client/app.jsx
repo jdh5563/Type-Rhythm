@@ -16,6 +16,10 @@ app.socket.on('joinedLobby', async lobbyJSON => {
     }
 });
 
+app.socket.on('startedRace', () => {
+    app.init();
+});
+
 const createRace = async e => {
     e.preventDefault();
     
@@ -36,7 +40,7 @@ const startRace = async e => {
     await ReactDOM.render(<Game/>,
         document.getElementById('game-content'));
     
-    app.init();
+    app.socket.emit('startedRace');
 }
 
 const renderLobby = async (players, raceCode) => {

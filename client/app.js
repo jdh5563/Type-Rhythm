@@ -59,7 +59,7 @@ const joinLobby = async (raceCode, _csrf) => {
 
   console.log(lobby);
 
-  socket.emit('joinedLobby', lobby, setLobby);
+  socket.emit('joinedLobby', lobby);
 };
 
 //#endregion
@@ -105,5 +105,6 @@ module.exports = {
   init,
   createLobby,
   joinLobby,
+  setLobby,
   socket,
 }

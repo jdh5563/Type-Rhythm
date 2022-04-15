@@ -2,6 +2,7 @@ const app = require('./app.js');
 
 app.socket.on('joinedLobby', async lobbyJSON => {
     if(!lobbyJSON.error){
+        app.setLobby(lobbyJSON);
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
     }
     else{

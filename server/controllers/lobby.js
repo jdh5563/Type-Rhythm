@@ -37,7 +37,7 @@ const leaveLobby = (req, res) => {
 
   delete lobbies[raceCode].players[username];
   return res.status(201).json(lobbies[raceCode]);
-}
+};
 
 module.exports = {
   createLobby,

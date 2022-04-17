@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('changedLobby', (lobbyInfo) => {
-    socket.broadcast.to('Room' + lobbyInfo.raceCode).emit('changedLobby', lobbyInfo);
+    socket.broadcast.to(`Room${lobbyInfo.raceCode}`).emit('changedLobby', lobbyInfo);
   });
 
   socket.on('startedRace', () => {

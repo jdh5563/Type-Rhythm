@@ -71,7 +71,7 @@ const leaveLobby = async (raceCode, _csrf) => {
 
   const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
 
-  const lobbyResponse = await fetch('/joinLobby', {
+  const lobbyResponse = await fetch('/leaveLobby', {
     method: 'POST',
     headers: {
     'Content-Type': 'application/json',
@@ -81,7 +81,11 @@ const leaveLobby = async (raceCode, _csrf) => {
 
   lobby = await lobbyResponse.json();
 
+  socket.leave('Room' + lobby.raceCode);
+
   socket.emit('changedLobby', lobby);
+
+  lobby = {};
 };
 
 //#endregion

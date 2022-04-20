@@ -60,7 +60,7 @@ const joinLobby = async (raceCode, _csrf) => {
   lobby = await lobbyResponse.json();
 
   setLobby(lobby);
-  socket.join('Room' + lobby.raceCode);
+  //socket.join('Room' + lobby.raceCode);
 
   socket.emit('changedLobby', lobby);
 };
@@ -81,7 +81,7 @@ const leaveLobby = async (raceCode, _csrf) => {
 
   lobby = await lobbyResponse.json();
 
-  socket.leave('Room' + lobby.raceCode);
+  //socket.leave('Room' + lobby.raceCode);
 
   socket.emit('changedLobby', lobby);
 

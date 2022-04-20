@@ -18,6 +18,9 @@ const router = (app) => {
   app.get('/car', mid.requiresLogin, controllers.Car.carPage);
   app.post('/car', mid.requiresLogin, controllers.Car.makeCar);
 
+  app.get('/premium', mid.requiresLogin, controllers.Account.getPremium);
+  app.post('/premium', mid.requiresLogin, controllers.Account.setPremium);
+
   app.post('/createLobby', mid.requiresLogin, controllers.Lobby.createLobby);
   app.post('/joinLobby', mid.requiresLogin, controllers.Lobby.joinLobby);
 

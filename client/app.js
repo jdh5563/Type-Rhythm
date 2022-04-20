@@ -36,7 +36,7 @@ const createLobby = async _csrf => {
 
   lobby = await lobbyResponse.json();
 
-  socket.join("Room" + lobby.raceCode);
+  //socket.join("Room" + lobby.raceCode);
   return lobby;
 };
 
@@ -122,6 +122,14 @@ const init = () => {
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth * 0.6;
     canvas.height = canvas.clientWidth * 0.69;
+
+    for(let i = 0; i < playerKeys.length; i++){
+      carSkins.push(new Image());
+      carSkins[i].onload = () => {
+        ctx.drawImage(carSkins[i], 0, i * canvas.height / playerKeys.length, 50, 50);
+      };
+      carSkins[i].src = lobby.players[playerKeys[i]].skin;
+    }
   });
 }
 

@@ -59,6 +59,13 @@ const getUsername = (req, res) => res.json({ username: req.session.account.usern
 
 const getToken = (req, res) => res.json({ csrfToken: req.csrfToken() });
 
+const getPremium = (req, res) => res.json({ premium: req.session.account.premium });
+
+const setPremium = (req, res) => {
+  req.session.account.premium = true;
+  res.status(201).json({ premium: req.session.account.premium });
+};
+
 module.exports = {
   loginPage,
   logout,
@@ -66,4 +73,6 @@ module.exports = {
   signup,
   getToken,
   getUsername,
+  getPremium,
+  setPremium,
 };

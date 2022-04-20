@@ -2,7 +2,7 @@ const app = require('./app.js');
 
 app.socket.on('changedLobby', async lobbyJSON => {
     if(!lobbyJSON.error){
-        app.socket.join('Room' + lobbyJSON.raceCode);
+        //app.socket.join('Room' + lobbyJSON.raceCode);
         app.setLobby(lobbyJSON);
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
     }

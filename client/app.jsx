@@ -48,7 +48,7 @@ const joinRace = async e => {
 const leaveRace = async e => {
     e.preventDefault();
 
-    await app.leaveLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
+    await app.leaveLobby(e.target.querySelector('#_csrf').value);
 
     ReactDOM.render(<LobbyCreate csrf={e.target.querySelector('#_csrf').value}/>,
         document.getElementById('game-content'));
@@ -61,7 +61,10 @@ const startRace = e => {
 };
 
 const renderLobby = async (players, raceCode) => {
-    ReactDOM.render(<Lobby players={players} raceCode={raceCode}/>,
+    const csrfResponse = await fetch('/getToken');
+    const csrfData = await csrfResponse.json();
+
+    ReactDOM.render(<Lobby players={players} raceCode={raceCode} csrf={csrfData.csrfToken}/>,
         document.getElementById('game-content'));
 
     const usernameResponse = await fetch('/getUsername');
@@ -131,6 +134,7 @@ const Lobby = props => {
             method='POST'
             >
                 <input id='leaveButton' type='submit' value='Leave Lobby'></input>
+                <input id='_csrf' type='hidden' name='_csrf' value={props.csrf} />
             </form>
         </div>
     );

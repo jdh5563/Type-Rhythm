@@ -23,6 +23,7 @@ const router = (app) => {
 
   app.post('/createLobby', mid.requiresLogin, controllers.Lobby.createLobby);
   app.post('/joinLobby', mid.requiresLogin, controllers.Lobby.joinLobby);
+  app.post('/leaveLobby', mid.requiresLogin, controllers.Lobby.leaveLobby);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };

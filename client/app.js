@@ -36,7 +36,8 @@ const createLobby = async _csrf => {
 
   lobby = await lobbyResponse.json();
 
-  //socket.join("Room" + lobby.raceCode);
+  socket.emit('createdLobby', lobby.raceCode);
+
   return lobby;
 };
 
@@ -60,16 +61,15 @@ const joinLobby = async (raceCode, _csrf) => {
   lobby = await lobbyResponse.json();
 
   setLobby(lobby);
-  //socket.join('Room' + lobby.raceCode);
 
-  socket.emit('changedLobby', lobby);
+  socket.emit('changedLobby', lobby, true);
 };
 
-const leaveLobby = async (raceCode, _csrf) => {
+const leaveLobby = async _csrf => {
   const usernameResponse = await fetch('/getUsername');
   const usernameData = await usernameResponse.json().then(username => username);
 
-  const lobbyInfo = { username: usernameData.username, raceCode, _csrf };
+  const lobbyInfo = { username: usernameData.username, raceCode: lobby.raceCode, _csrf };
 
   const lobbyResponse = await fetch('/leaveLobby', {
     method: 'POST',
@@ -80,10 +80,8 @@ const leaveLobby = async (raceCode, _csrf) => {
   });
 
   lobby = await lobbyResponse.json();
-
-  //socket.leave('Room' + lobby.raceCode);
-
-  socket.emit('changedLobby', lobby);
+  
+  socket.emit('changedLobby', lobby, false);
 
   lobby = {};
 };

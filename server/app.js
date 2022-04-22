@@ -82,8 +82,12 @@ const io = new Server(httpServer, { /* options */ });
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('changedLobby', (lobbyInfo) => {
-    socket.broadcast./*to(`Room${lobbyInfo.raceCode}`).*/emit('changedLobby', lobbyInfo);
+  socket.on('createdLobby', raceCode => socket.join("Room" + raceCode));
+
+  socket.on('changedLobby', (lobbyInfo, isJoining) => {
+    if(isJoining) socket.join("Room" + lobbyInfo.raceCode);
+    else socket.leave("Room" + lobbyInfo.raceCode);
+    socket.broadcast.to(`Room${lobbyInfo.raceCode}`).emit('changedLobby', lobbyInfo);
   });
 
   socket.on('startedRace', () => {

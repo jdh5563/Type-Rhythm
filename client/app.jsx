@@ -150,6 +150,28 @@ const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
 
+    const premiumButton = document.getElementById('premiumButton');
+
+    premiumButton.addEventListener('click', async e => {
+        e.preventDefault();
+
+        if(await fetch('/premium')) console.log('Premium mode activated!');
+        else console.log('No premium :(');
+
+        await fetch('/premium', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ _csrf: data.csrfToken }),
+        });
+
+        if(await fetch('/premium')) console.log('Premium mode activated!');
+        else console.log('No premium :(');
+
+        return false;
+    })
+
     ReactDOM.render(<LobbyCreate csrf={data.csrfToken}/>,
         document.getElementById('game-content'));
 };

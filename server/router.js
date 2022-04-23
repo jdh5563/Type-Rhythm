@@ -25,6 +25,8 @@ const router = (app) => {
   app.post('/joinLobby', mid.requiresLogin, controllers.Lobby.joinLobby);
   app.post('/leaveLobby', mid.requiresLogin, controllers.Lobby.leaveLobby);
 
+  app.get('/generateParagraph', mid.requiresLogin, controllers.TextGenerator.generateParagraph);
+
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 

@@ -1,17 +1,22 @@
 const helper = require('./helper.js');
 
-const handleCar = e => {
+let isPremium;
+
+const handleCar = async e => {
     e.preventDefault();
 
-    const skin = e.target.querySelector('[name="skins"]:checked').value;
-    const _csrf = e.target.querySelector('#_csrf').value;
+    if(isPremium) {
+        // https://stackoverflow.com/questions/9618504/how-to-get-the-selected-radio-button-s-value
+        const skin = e.target.querySelector('[name="skins"]:checked').value;
+        const _csrf = e.target.querySelector('#_csrf').value;
 
-    helper.sendCarPost(e.target.action, {skin, _csrf}, car => {
-        ReactDOM.render(
-            <CarImage skin={car.skin} />,
-            document.getElementById('carSection')
-        );
-    });
+        helper.sendCarPost(e.target.action, {skin, _csrf}, car => {
+            ReactDOM.render(
+                <CarImage skin={car.skin} />,
+                document.getElementById('carSection')
+            );
+        });
+    }
 
     return false;
 };
@@ -25,7 +30,7 @@ const CarForm = props => {
             method='POST'
             className='carForm'
         >
-            <input id='yellowSkin' type='radio' name='skins' value='/assets/img/cardefault.png'/>
+            <input id='yellowSkin' type='radio' name='skins' value='/assets/img/cardefault.png' defaultChecked={true}/>
             <label htmlFor='yellowSkin'>Yellow </label>
             <input id='greenSkin' type='radio' name='skins' value='/assets/img/cargreen.png'/>
             <label htmlFor='greenSkin'>Green </label>
@@ -59,6 +64,33 @@ const loadCarFromServer = async () => {
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
+
+    isPremium = await fetch('/premium').then(res => res.json()).then(premium => premium.premium);
+
+    const premiumButton = document.getElementById('premiumButton');
+
+    if(!isPremium) {
+        premiumButton.addEventListener('click', async e => {
+            e.preventDefault();
+
+            isPremium = await fetch('/premium', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ _csrf: data.csrfToken }),
+            })
+            .then(res => res.json())
+            .then(premium => premium.premium);
+
+            e.target.textContent = 'Premium Member!';
+
+            return false;
+        });
+    }
+    else {
+        premiumButton.textContent = 'Premium Member!';
+    }
 
     ReactDOM.render(
         <CarForm csrf={data.csrfToken} />,

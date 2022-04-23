@@ -1,3 +1,6 @@
+const deepai = require("deepai");
+deepai.setApiKey("ae1a7157-817d-4344-973c-260402dda431"); // get your free API key at https://deepai.org
+
 let lobby;
 
 const setLobby = lobbyJSON => { lobby = lobbyJSON; }
@@ -80,7 +83,7 @@ const leaveLobby = async _csrf => {
   });
 
   lobby = await lobbyResponse.json();
-  
+
   socket.emit('changedLobby', lobby, false);
 
   lobby = {};
@@ -93,9 +96,11 @@ const leaveLobby = async _csrf => {
 let canvas;
 let ctx;
 
+let paragraph;
+
 const carSkins = [];
 
-const init = () => {
+const init = async () => {
   canvas = document.getElementById('canvas');
   ctx = canvas.getContext('2d');
 
@@ -106,6 +111,31 @@ const init = () => {
   ctx.fillStyle = 'white';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.height);
   ctx.restore();
+
+  paragraph = document.getElementById('paragraph');
+
+  let officialParagraph = "";
+  do {
+    const aiResponse = await deepai.callStandardApi("text-generator", {
+      text: "The",
+    });
+  
+    const aiOutput = aiResponse.output;
+  
+    const potentialOutputs = aiOutput.split('\n');
+  
+    for(let i = 1; i < potentialOutputs.length; i++) {
+      potentialOutputs.splice(i, 1);
+    }
+
+    for(let output of potentialOutputs){
+      if(output.length > 300 && output.length > officialParagraph.length) {
+        officialParagraph = output;
+      }
+    }
+  } while(officialParagraph === "");
+
+  paragraph.textContent = officialParagraph;
 
   const playerKeys = Object.keys(lobby.players);
 

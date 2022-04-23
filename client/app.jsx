@@ -21,7 +21,7 @@ app.socket.on('startedRace', async () => {
     await ReactDOM.render(<Game/>,
         document.getElementById('game-content'));
 
-    app.init();
+    await app.init();
 });
 
 const createRace = async e => {
@@ -142,7 +142,10 @@ const Lobby = props => {
 
 const Game = props => {
     return (
-        <canvas id="canvas"></canvas>
+        <div>
+            <canvas id="canvas"></canvas>
+            <p id='paragraph'></p>
+        </div>
     );
 };
 

@@ -109,13 +109,14 @@ const init = async () => {
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.height);
   ctx.restore();
 
-  paragraph = document.getElementById('paragraph');
-
   const paragraphResponse = await fetch('/generateParagraph');
   const paragraphJSON = await paragraphResponse.json();
   const officialParagraph = paragraphJSON.paragraph;
 
-  paragraph.textContent = officialParagraph;
+  ctx.save();
+  ctx.font = '16px Arial';
+  drawText(ctx, officialParagraph, 10, canvas.height * 0.75, 20, canvas.width - 20);
+  ctx.restore();
 
   const playerKeys = Object.keys(lobby.players);
 
@@ -131,6 +132,11 @@ const init = async () => {
     canvas.width = window.innerWidth * 0.6;
     canvas.height = canvas.clientWidth * 0.69;
 
+    ctx.save();
+    ctx.font = '16px Arial';
+    drawText(ctx, officialParagraph, 10, canvas.height * 0.75, 20, canvas.width - 20);
+    ctx.restore();
+
     for(let i = 0; i < playerKeys.length; i++){
       carSkins.push(new Image());
       carSkins[i].onload = () => {
@@ -142,6 +148,29 @@ const init = async () => {
 }
 
 //#endregion
+
+// https://stackoverflow.com/questions/5026961/html5-canvas-ctx-filltext-wont-do-line-breaks
+const drawText = (ctx, text, x, y, lineHeight, fitWidth) => {
+  fitWidth = fitWidth || 0;
+  
+  if (fitWidth <= 0)
+  {
+        ctx.fillText( text, x, y );
+      return;
+  }
+  
+  for (let idx = 1; idx <= text.length; idx++)
+  {
+      const str = text.substr(0, idx);
+      if (ctx.measureText(str).width > fitWidth)
+      {
+          ctx.fillText( text.substr(0, idx-1), x, y );
+          drawText(ctx, text.substr(idx-1), x, y + lineHeight, lineHeight,  fitWidth);
+          return;
+      }
+  }
+  ctx.fillText(text, x, y);
+};
 
 module.exports = {
   init,

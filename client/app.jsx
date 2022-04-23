@@ -144,7 +144,6 @@ const Game = props => {
     return (
         <div>
             <canvas id="canvas"></canvas>
-            <p id='paragraph'></p>
         </div>
     );
 };

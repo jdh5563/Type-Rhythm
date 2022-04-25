@@ -2,7 +2,6 @@ const app = require('./app.js');
 
 app.socket.on('changedLobby', async lobbyJSON => {
     if(!lobbyJSON.error){
-        //app.socket.join('Room' + lobbyJSON.raceCode);
         app.setLobby(lobbyJSON);
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
     }
@@ -32,14 +31,14 @@ const createRace = async e => {
 const joinRace = async e => {
     e.preventDefault();
 
-    await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
+    const lobbyJSON = await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
 
-    // if(!lobbyJSON.error) {
-    //     renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
-    // }
-    // else {
-    //     ReactDOM.render(<Error error={lobbyJSON.error} />);
-    // }
+    if(!lobbyJSON.error) {
+        renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
+    }
+    else {
+        ReactDOM.render(<Error error={lobbyJSON.error} />);
+    }
 };
 
 const leaveRace = async e => {

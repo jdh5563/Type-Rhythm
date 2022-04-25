@@ -87,7 +87,7 @@ io.on('connection', (socket) => {
   socket.on('changedLobby', (lobbyInfo, isJoining) => {
     if(isJoining) socket.join("Room" + lobbyInfo.raceCode);
     else socket.leave("Room" + lobbyInfo.raceCode);
-    io.to(`Room${lobbyInfo.raceCode}`).emit('changedLobby', lobbyInfo);
+    socket.to(`Room${lobbyInfo.raceCode}`).emit('changedLobby', lobbyInfo);
   });
 
   socket.on('startedRace', async (officialParagraph, raceCode) => {

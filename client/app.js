@@ -64,6 +64,8 @@ const joinLobby = async (raceCode, _csrf) => {
   setLobby(lobby);
 
   socket.emit('changedLobby', lobby, true);
+
+  return lobby;
 };
 
 const leaveLobby = async _csrf => {

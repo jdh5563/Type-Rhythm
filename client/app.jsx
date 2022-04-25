@@ -16,7 +16,10 @@ app.socket.on('changedLobby', async lobbyJSON => {
     }
 });
 
-app.socket.on('startedRace', async officialParagraph => {        
+app.socket.on('startedRace', async officialParagraph => {     
+    await ReactDOM.render(<Game/>,
+        document.getElementById('game-content'));
+           
     app.init(officialParagraph);
 });
 

@@ -34,12 +34,12 @@ const joinRace = async e => {
 
     await app.joinLobby(e.target.querySelector('#raceCode').value, e.target.querySelector('#_csrf').value);
 
-    if(!lobbyJSON.error) {
-        renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
-    }
-    else {
-        ReactDOM.render(<Error error={lobbyJSON.error} />);
-    }
+    // if(!lobbyJSON.error) {
+    //     renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
+    // }
+    // else {
+    //     ReactDOM.render(<Error error={lobbyJSON.error} />);
+    // }
 };
 
 const leaveRace = async e => {

@@ -17,11 +17,8 @@ app.socket.on('changedLobby', async lobbyJSON => {
     }
 });
 
-app.socket.on('startedRace', async () => {
-    await ReactDOM.render(<Game/>,
-        document.getElementById('game-content'));
-
-    await app.init();
+app.socket.on('startedRace', async officialParagraph => {        
+    app.init(officialParagraph);
 });
 
 const createRace = async e => {
@@ -54,10 +51,17 @@ const leaveRace = async e => {
         document.getElementById('game-content'));
 };
 
-const startRace = e => {
+const startRace = async e => {
     e.preventDefault();
+
+    await ReactDOM.render(<Game/>,
+        document.getElementById('game-content'));
+
+    const paragraphResponse = await fetch('/generateParagraph');
+    const paragraphJSON = await paragraphResponse.json();
+    const officialParagraph = paragraphJSON.paragraph;
     
-    app.socket.emit('startedRace');
+    app.socket.emit('startedRace', officialParagraph, app.getRaceCode());
 };
 
 const renderLobby = async (players, raceCode) => {

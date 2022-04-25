@@ -90,8 +90,8 @@ io.on('connection', (socket) => {
     socket.broadcast.to(`Room${lobbyInfo.raceCode}`).emit('changedLobby', lobbyInfo);
   });
 
-  socket.on('startedRace', () => {
-    io.emit('startedRace');
+  socket.on('startedRace', async (officialParagraph, raceCode) => {
+    io.to("Room" + raceCode).emit('startedRace', officialParagraph);
   });
 
   socket.on('disconnect', () => {

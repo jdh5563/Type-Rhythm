@@ -1,6 +1,7 @@
 let lobby;
 
 const setLobby = lobbyJSON => { lobby = lobbyJSON; }
+const getRaceCode = () => lobby.raceCode;
 
 //#region SOCKET IO CODE
 
@@ -97,7 +98,7 @@ let paragraph;
 
 const carSkins = [];
 
-const init = async () => {
+const init = officialParagraph => {
   canvas = document.getElementById('canvas');
   ctx = canvas.getContext('2d');
 
@@ -108,10 +109,6 @@ const init = async () => {
   ctx.fillStyle = 'white';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.height);
   ctx.restore();
-
-  const paragraphResponse = await fetch('/generateParagraph');
-  const paragraphJSON = await paragraphResponse.json();
-  const officialParagraph = paragraphJSON.paragraph;
 
   ctx.save();
   ctx.font = '16px Arial';
@@ -177,6 +174,7 @@ module.exports = {
   createLobby,
   joinLobby,
   leaveLobby,
+  getRaceCode,
   setLobby,
   socket,
 }

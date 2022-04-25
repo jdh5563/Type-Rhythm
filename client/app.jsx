@@ -19,7 +19,7 @@ app.socket.on('changedLobby', async lobbyJSON => {
 app.socket.on('startedRace', async officialParagraph => {     
     await ReactDOM.render(<Game/>,
         document.getElementById('game-content'));
-           
+
     app.init(officialParagraph);
 });
 
@@ -56,12 +56,12 @@ const leaveRace = async e => {
 const startRace = async e => {
     e.preventDefault();
 
-    await ReactDOM.render(<Game/>,
-        document.getElementById('game-content'));
-
     const paragraphResponse = await fetch('/generateParagraph');
     const paragraphJSON = await paragraphResponse.json();
     const officialParagraph = paragraphJSON.paragraph;
+
+    await ReactDOM.render(<Game/>,
+        document.getElementById('game-content'));
     
     app.socket.emit('startedRace', officialParagraph, app.getRaceCode());
 };

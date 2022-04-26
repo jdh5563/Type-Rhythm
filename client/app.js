@@ -97,6 +97,7 @@ let canvas;
 let ctx;
 
 let paragraph;
+let userInput;
 
 const carSkins = [];
 
@@ -112,6 +113,8 @@ const init = officialParagraph => {
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.height);
   ctx.restore();
 
+  paragraph = officialParagraph;
+
   ctx.save();
   ctx.font = '16px Arial';
   drawText(ctx, officialParagraph, 10, canvas.height * 0.75, 20, canvas.width - 20);
@@ -126,6 +129,9 @@ const init = officialParagraph => {
     };
     carSkins[i].src = lobby.players[playerKeys[i]].skin;
   }
+
+  userInput = document.getElementById('user-input');
+  userInput.oninput = e => e.target.value = '';
 
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth * 0.6;
@@ -144,12 +150,64 @@ const init = officialParagraph => {
       carSkins[i].src = lobby.players[playerKeys[i]].skin;
     }
   });
-}
 
-//#endregion
+  // Somehow, this is what it took to make a 3,2,1 countdown
+  // Perhaps I could have done this smarter
+  window.setTimeout(() => {
+    window.setTimeout(() => {
+      window.setTimeout(() => {
+        window.setTimeout(() => {
+
+          const oneMeasurements = ctx.measureText('1');
+          ctx.clearRect(canvas.width * 0.5, canvas.height * 0.5 + 10, oneMeasurements.width, (oneMeasurements.fontBoundingBoxAscent + oneMeasurements.fontBoundingBoxDescent) * -1);
+          ctx.restore();
+
+          userInput.oninput = handleInput;
+        }, 1000);
+
+        const twoMeasurements = ctx.measureText('2');
+        ctx.clearRect(canvas.width * 0.5, canvas.height * 0.5 + 10, twoMeasurements.width, (twoMeasurements.fontBoundingBoxAscent + twoMeasurements.fontBoundingBoxDescent) * -1);
+
+        drawText(ctx, '1', canvas.width * 0.5, canvas.height * 0.5, 20, canvas.width - 20);
+      }, 1000);
+
+      const threeMeasurements = ctx.measureText('3');
+      ctx.clearRect(canvas.width * 0.5, canvas.height * 0.5 + 10, threeMeasurements.width, (threeMeasurements.fontBoundingBoxAscent + threeMeasurements.fontBoundingBoxDescent) * -1);
+
+      drawText(ctx, '2', canvas.width * 0.5, canvas.height * 0.5, 20, canvas.width - 20);
+
+    }, 1000);
+
+    ctx.save();
+    ctx.font = '72px Arial';
+    drawText(ctx, '3', canvas.width * 0.5, canvas.height * 0.5, 20, canvas.width - 20);
+  }, 1000);
+};
+
+const handleInput = e => {
+  ctx.save();
+  ctx.font = '16px Arial';
+
+  let input = e.target.value;
+  const inputMeasurement = ctx.measureText(paragraph.substring(0, input.length));
+  const inputWidth = inputMeasurement.width;
+  ctx.clearRect(0, canvas.height * 0.75 - inputMeasurement.fontBoundingBoxAscent, canvas.width, canvas.height);
+
+  if(paragraph.substring(0, input.length) === input) {
+    drawText(ctx, paragraph, 10, canvas.height * 0.75, 20, canvas.width - 20, inputWidth, input.length);
+  }
+  else {
+    drawText(ctx, paragraph, 10, canvas.height * 0.75, 20, canvas.width - 20, inputWidth, input.length - 1);
+
+    input = input.substring(0, input.length - 1);
+    e.target.value = input;
+  }
+
+  ctx.restore();
+};
 
 // https://stackoverflow.com/questions/5026961/html5-canvas-ctx-filltext-wont-do-line-breaks
-const drawText = (ctx, text, x, y, lineHeight, fitWidth) => {
+const drawText = (ctx, text, x, y, lineHeight, fitWidth, offset = 0, numGreen = 0) => {
   fitWidth = fitWidth || 0;
   
   if (fitWidth <= 0)
@@ -160,16 +218,43 @@ const drawText = (ctx, text, x, y, lineHeight, fitWidth) => {
   
   for (let idx = 1; idx <= text.length; idx++)
   {
-      const str = text.substr(0, idx);
+      const str = text.substring(0, idx);
       if (ctx.measureText(str).width > fitWidth)
       {
-          ctx.fillText( text.substr(0, idx-1), x, y );
-          drawText(ctx, text.substr(idx-1), x, y + lineHeight, lineHeight,  fitWidth);
-          return;
+        if(idx - 1 <= numGreen){
+          ctx.save();
+          ctx.fillStyle = 'green';
+          ctx.fillText( text.substring(0, idx-1), x, y );
+          drawText(ctx, text.substring(idx-1), x, y + lineHeight, lineHeight,  fitWidth, numGreen - (idx - 1));
+          ctx.restore();
+        }
+        else{
+          ctx.save();
+          ctx.fillStyle = 'green';
+          ctx.fillText(text.substring(0, numGreen), x, y);
+          ctx.restore();
+
+          ctx.fillText(text.substring(numGreen, idx-1), x + offset, y );
+          drawText(ctx, text.substring(idx-1), x, y + lineHeight, lineHeight, fitWidth);
+        }
+
+        return;
       }
   }
-  ctx.fillText(text, x, y);
+
+  if(numGreen > 0){
+    ctx.save();
+    ctx.fillStyle = 'green';
+    ctx.fillText(text.substring(0, numGreen), x, y);
+    ctx.restore();
+    ctx.fillText(text.substring(numGreen), x, y);
+  }
+  else{
+    ctx.fillText(text, x, y);
+  }
 };
+
+//#endregion
 
 module.exports = {
   init,

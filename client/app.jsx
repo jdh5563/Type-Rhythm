@@ -149,7 +149,12 @@ const Lobby = props => {
 const Game = props => {
     return (
         <div>
-            <canvas id="canvas"></canvas>
+            <div>
+                <canvas id="canvas"></canvas>
+            </div>
+            <div>
+                <input id="user-input" type="text" placeholder="Type here!"/>
+            </div>
         </div>
     );
 };

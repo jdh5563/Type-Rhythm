@@ -4,25 +4,30 @@ deepai.setApiKey('ae1a7157-817d-4344-973c-260402dda431'); // get your free API k
 
 const generateParagraph = async (req, res) => {
   let officialParagraph = '';
-  do {
-    const aiResponse = await deepai.callStandardApi('text-generator', {
-      text: 'The',
-    });
 
-    const aiOutput = aiResponse.output;
+  const aiResponse = await deepai.callStandardApi('text-generator', {
+    text: 'The',
+  });
 
-    const potentialOutputs = aiOutput.split('\n');
+  const aiOutput = aiResponse.output;
 
-    for (let i = 1; i < potentialOutputs.length; i++) {
-      potentialOutputs.splice(i, 1);
+  const potentialOutputs = aiOutput.split('\n');
+
+  for (let i = 1; i < potentialOutputs.length; i++) {
+    potentialOutputs.splice(i, 1);
+  }
+
+  for (let i = 0; i < potentialOutputs.length; i++) {
+    if (potentialOutputs[i].length > 300
+        && potentialOutputs[i].length < 500
+        && potentialOutputs[i].length > officialParagraph.length) {
+      officialParagraph = potentialOutputs[i];
     }
+  }
 
-    for (const output of potentialOutputs) {
-      if (output.length > 300 && output.length < 500 && output.length > officialParagraph.length) {
-        officialParagraph = output;
-      }
-    }
-  } while (officialParagraph === '');
+  if (officialParagraph === '') {
+    officialParagraph = 'Cyril says no, just walks past the empty table and into his bedroom. "I don\'t know so I just come here so you can see what\'s happening. What is it about being this big that I don\'t like anymore?" The little fox hesitates for a moment but looks away. "I\'m just looking at you too." He looks back and smiles.';
+  }
 
   return res.json({ paragraph: officialParagraph });
 };

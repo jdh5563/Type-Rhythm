@@ -122,7 +122,6 @@ const init = officialParagraph => {
 
   ctx.save();
   ctx.font = '16px Arial';
-  console.log(officialParagraph);
   drawText(ctx, officialParagraph, 10, canvas.height * 0.75, 20, canvas.width - 20);
   ctx.restore();
 

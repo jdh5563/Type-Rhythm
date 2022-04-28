@@ -3,7 +3,7 @@ template.innerHTML = `
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="/login" target="blank">
+        <a class="navbar-item" href="/login">
             <img src="/assets/img/favicon.png" alt="Race Page">
         </a>
 

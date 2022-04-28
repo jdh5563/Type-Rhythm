@@ -97,7 +97,11 @@ let canvas;
 let ctx;
 
 let paragraph;
+let numWords;
 let userInput;
+
+let startTime;
+let endTime;
 
 const carSkins = [];
 
@@ -114,9 +118,11 @@ const init = officialParagraph => {
   ctx.restore();
 
   paragraph = officialParagraph;
+  numWords = paragraph.split(' ').length;
 
   ctx.save();
   ctx.font = '16px Arial';
+  console.log(officialParagraph);
   drawText(ctx, officialParagraph, 10, canvas.height * 0.75, 20, canvas.width - 20);
   ctx.restore();
 
@@ -163,6 +169,7 @@ const init = officialParagraph => {
           ctx.restore();
 
           userInput.oninput = handleInput;
+          startTime = Date.now();
         }, 1000);
 
         const twoMeasurements = ctx.measureText('2');
@@ -184,7 +191,7 @@ const init = officialParagraph => {
   }, 1000);
 };
 
-const handleInput = e => {
+const handleInput = async e => {
   ctx.save();
   ctx.font = '16px Arial';
 
@@ -194,10 +201,41 @@ const handleInput = e => {
   ctx.clearRect(0, canvas.height * 0.75 - inputMeasurement.fontBoundingBoxAscent, canvas.width, canvas.height);
 
   if(paragraph.substring(0, input.length) === input) {
-    drawText(ctx, paragraph, 10, canvas.height * 0.75, 20, canvas.width - 20, inputWidth, input.length);
+    drawText(ctx, paragraph, 10, canvas.height * 0.75, 20, canvas.width - 20, input.length, inputWidth);
+
+    if(input.length === paragraph.length) {
+      endTime = Date.now() - startTime;
+      e.target.oninput = e => { return; };
+
+      const csrfResponse = await fetch('/getToken');
+      const csrfData = await csrfResponse.json();
+
+      const standingResponse = await fetch('/getStanding', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ raceCode: lobby.raceCode, _csrf: csrfData.csrfToken }),
+    });
+      const standingJSON = await standingResponse.json();
+
+      // https://bobbyhadz.com/blog/javascript-get-first-digit-of-number
+      // This link provided the idea of casting the Number to a String
+      const standing = standingJSON.standing + getStandingSuffix(String(standingJSON.standing));
+
+      const wpm = Math.round(numWords / (endTime / 60000));
+
+      const finishText = `You got ${standing} place!
+                        You type ${wpm} wpm!`;
+
+      ctx.save();
+      ctx.font = '48px Arial';
+      drawText(ctx, finishText, canvas.width * 0.15, canvas.height * 0.5, 60, canvas.width - 20);
+      ctx.restore();
+    }
   }
   else {
-    drawText(ctx, paragraph, 10, canvas.height * 0.75, 20, canvas.width - 20, inputWidth, input.length - 1);
+    drawText(ctx, paragraph, 10, canvas.height * 0.75, 20, canvas.width - 20, input.length - 1, inputWidth);
 
     input = input.substring(0, input.length - 1);
     e.target.value = input;
@@ -207,7 +245,7 @@ const handleInput = e => {
 };
 
 // https://stackoverflow.com/questions/5026961/html5-canvas-ctx-filltext-wont-do-line-breaks
-const drawText = (ctx, text, x, y, lineHeight, fitWidth, offset = 0, numGreen = 0) => {
+const drawText = (ctx, text, x, y, lineHeight, fitWidth, numGreen = 0, offset = 0) => {
   fitWidth = fitWidth || 0;
   
   if (fitWidth <= 0)
@@ -215,18 +253,17 @@ const drawText = (ctx, text, x, y, lineHeight, fitWidth, offset = 0, numGreen = 
         ctx.fillText( text, x, y );
       return;
   }
-  
   for (let idx = 1; idx <= text.length; idx++)
   {
       const str = text.substring(0, idx);
       if (ctx.measureText(str).width > fitWidth)
       {
-        if(idx - 1 <= numGreen){
+        if(idx <= numGreen){
           ctx.save();
           ctx.fillStyle = 'green';
-          ctx.fillText( text.substring(0, idx-1), x, y );
-          drawText(ctx, text.substring(idx-1), x, y + lineHeight, lineHeight,  fitWidth, numGreen - (idx - 1));
+          ctx.fillText( text.substring(0, idx), x, y );
           ctx.restore();
+          drawText(ctx, text.substring(idx), x, y + lineHeight, lineHeight,  fitWidth, numGreen - idx, offset);
         }
         else{
           ctx.save();
@@ -234,8 +271,8 @@ const drawText = (ctx, text, x, y, lineHeight, fitWidth, offset = 0, numGreen = 
           ctx.fillText(text.substring(0, numGreen), x, y);
           ctx.restore();
 
-          ctx.fillText(text.substring(numGreen, idx-1), x + offset, y );
-          drawText(ctx, text.substring(idx-1), x, y + lineHeight, lineHeight, fitWidth);
+          ctx.fillText(text.substring(numGreen, idx), x + ctx.measureText(text.substring(0, numGreen)).width, y );
+          drawText(ctx, text.substring(idx), x, y + lineHeight, lineHeight, fitWidth);
         }
 
         return;
@@ -247,11 +284,18 @@ const drawText = (ctx, text, x, y, lineHeight, fitWidth, offset = 0, numGreen = 
     ctx.fillStyle = 'green';
     ctx.fillText(text.substring(0, numGreen), x, y);
     ctx.restore();
-    ctx.fillText(text.substring(numGreen), x, y);
+    ctx.fillText(text.substring(numGreen), x + ctx.measureText(text.substring(0, numGreen)).width, y);
   }
   else{
     ctx.fillText(text, x, y);
   }
+};
+
+const getStandingSuffix = standing => {
+  if(standing[standing.length - 1] === '1') return 'st';
+  else if(standing[standing.length - 1] === '2') return 'nd';
+  else if(standing[standing.length - 1] === '3') return 'rd';
+  else return 'th';
 };
 
 //#endregion

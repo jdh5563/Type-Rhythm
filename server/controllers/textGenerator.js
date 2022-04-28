@@ -17,7 +17,7 @@ const generateParagraph = async (req, res) => {
       }
   
       for(let output of potentialOutputs){
-        if(output.length > 300 && output.length < 600 && output.length > officialParagraph.length) {
+        if(output.length > 300 && output.length < 500 && output.length > officialParagraph.length) {
           officialParagraph = output;
         }
       }

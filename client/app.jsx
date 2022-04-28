@@ -6,12 +6,6 @@ app.socket.on('changedLobby', async lobbyJSON => {
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
     }
     else{
-        const Error = props => {
-            return (
-                <h1>{props.error}</h1>
-            );
-        }
-
         ReactDOM.render(<Error error={lobbyJSON.error} />);
     }
 });
@@ -40,7 +34,8 @@ const joinRace = async e => {
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
     }
     else {
-        ReactDOM.render(<Error error={lobbyJSON.error} />);
+        ReactDOM.render(<Error error={lobbyJSON.error} />,
+            document.getElementById('game-content'));
     }
 };
 
@@ -156,6 +151,12 @@ const Game = props => {
                 <input id="user-input" type="text" placeholder="Type here!"/>
             </div>
         </div>
+    );
+};
+
+const Error = props => {
+    return (
+        <h1>{props.error}</h1>
     );
 };
 

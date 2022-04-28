@@ -3,6 +3,8 @@ const CarModel = require('../models/Car');
 
 const { Car } = models;
 
+const appPage = (req, res) => res.render('app');
+
 const carPage = (req, res) => res.render('car');
 
 const makeCar = async (req, res) => {
@@ -41,12 +43,11 @@ const getCar = async (req, res) => {
   });
 
   await car.save();
-  console.log(car);
-  console.log(car.skin);
   return res.status(201).json({ skin: car.skin });
 };
 
 module.exports = {
+  appPage,
   carPage,
   makeCar,
   getCar,

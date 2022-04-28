@@ -27,8 +27,8 @@ const joinLobby = (req, res) => {
   if (!lobbies[raceCode]) {
     return res.status(400).json({ error: 'No room with that code exists!' });
   }
-  else if(Object.keys(lobbies[raceCode].players).length === 5){
-    return res.status(400).json({ error: 'Lobby ' + raceCode + ' is already full!' });
+  if (Object.keys(lobbies[raceCode].players).length === 5) {
+    return res.status(400).json({ error: `Lobby ${raceCode} is already full!` });
   }
 
   lobbies[raceCode].players[username] = { username, skin, owner: false };
@@ -45,11 +45,11 @@ const leaveLobby = (req, res) => {
 };
 
 const getStanding = (req, res) => {
-  const raceCode = req.body.raceCode;
+  const { raceCode } = req.body;
   lobbies[raceCode].standing++;
 
   return res.status(201).json({ standing: lobbies[raceCode].standing });
-}
+};
 
 module.exports = {
   createLobby,

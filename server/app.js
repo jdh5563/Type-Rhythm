@@ -18,7 +18,7 @@ const router = require('./router.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/Domomaker';
+const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/TypeRhythm';
 
 mongoose.connect(dbURI, (err) => {
   if (err) {
@@ -82,16 +82,16 @@ const io = new Server(httpServer, { /* options */ });
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('createdLobby', raceCode => socket.join("Room" + raceCode));
+  socket.on('createdLobby', (raceCode) => socket.join(`Room${raceCode}`));
 
   socket.on('changedLobby', (lobbyInfo, isJoining) => {
-    if(isJoining) socket.join("Room" + lobbyInfo.raceCode);
-    else socket.leave("Room" + lobbyInfo.raceCode);
+    if (isJoining) socket.join(`Room${lobbyInfo.raceCode}`);
+    else socket.leave(`Room${lobbyInfo.raceCode}`);
     socket.to(`Room${lobbyInfo.raceCode}`).emit('changedLobby', lobbyInfo);
   });
 
   socket.on('startedRace', async (officialParagraph, raceCode) => {
-    io.to("Room" + raceCode).emit('startedRace', officialParagraph);
+    io.to(`Room${raceCode}`).emit('startedRace', officialParagraph);
   });
 
   socket.on('disconnect', () => {

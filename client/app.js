@@ -61,6 +61,8 @@ const joinLobby = async (raceCode, _csrf) => {
 
   lobby = await lobbyResponse.json();
 
+  if(lobby.error) return lobby;
+
   setLobby(lobby);
 
   socket.emit('changedLobby', lobby, true);

@@ -24,10 +24,13 @@ const joinLobby = (req, res) => {
   let { raceCode } = req.body;
   raceCode = raceCode.toUpperCase();
 
-  if (!lobbies[raceCode]) {
+  if(!raceCode){
+    return res.status(400).json({ error: 'No code entered!' });
+  }
+  else if (!lobbies[raceCode]) {
     return res.status(400).json({ error: 'No room with that code exists!' });
   }
-  if (Object.keys(lobbies[raceCode].players).length === 5) {
+  else if (Object.keys(lobbies[raceCode].players).length === 5) {
     return res.status(400).json({ error: `Lobby ${raceCode} is already full!` });
   }
 
@@ -41,6 +44,13 @@ const leaveLobby = (req, res) => {
   raceCode = raceCode.toUpperCase();
 
   delete lobbies[raceCode].players[username];
+
+  if(Object.keys(lobbies[raceCode].players).length === 0) {
+    const emptyLobby = lobbies[raceCode];
+    delete lobbies[raceCode];
+    return res.status(201).json(emptyLobby);
+  }
+
   return res.status(201).json(lobbies[raceCode]);
 };
 

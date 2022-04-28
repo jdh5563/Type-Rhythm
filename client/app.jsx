@@ -6,7 +6,9 @@ app.socket.on('changedLobby', async lobbyJSON => {
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
     }
     else{
-        ReactDOM.render(<Error error={lobbyJSON.error} />);
+        document.getElementById('error').classList.remove('hidden');
+        ReactDOM.render(<Error error={lobbyJSON.error} />,
+            document.getElementById('error'));
     }
 });
 
@@ -34,8 +36,9 @@ const joinRace = async e => {
         renderLobby(lobbyJSON.players, lobbyJSON.raceCode);
     }
     else {
+        document.getElementById('error').classList.remove('hidden');
         ReactDOM.render(<Error error={lobbyJSON.error} />,
-            document.getElementById('game-content'));
+            document.getElementById('error'));
     }
 };
 
@@ -62,6 +65,8 @@ const startRace = async e => {
 };
 
 const renderLobby = async (players, raceCode) => {
+    document.getElementById('error').classList.add('hidden');
+
     const csrfResponse = await fetch('/getToken');
     const csrfData = await csrfResponse.json();
 

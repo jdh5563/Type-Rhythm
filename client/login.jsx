@@ -86,8 +86,9 @@ const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
 
-    const loginButton = document.getElementById('loginButton');
-    const signupButton = document.getElementById('signupButton');
+    const navbar = document.querySelector('login-nav');
+    const loginButton = navbar.shadowRoot.lastElementChild.lastElementChild.firstElementChild.lastElementChild;
+    const signupButton = navbar.shadowRoot.lastElementChild.lastElementChild.firstElementChild.firstElementChild;
 
     loginButton.addEventListener('click', e => {
         e.preventDefault();

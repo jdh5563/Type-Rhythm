@@ -1,50 +1,11 @@
-html, body {
-    height: 100%;
+#game-content {
     width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+    text-align: center;
 }
 
-#logo {
-    height: 40px;
-    width: 40;
-    padding-top: 5px;
-    float:left;
-    border-radius: 8px;
-}
-
-nav {
-    width: 100%;
-    height: 50px;
-    background-color: #55acee;
-}
-
-nav:nth-child(1) {
-    padding-left: 25px;
-}
-
-.navlink {
-    padding: 5px;
-    padding-top: 12px;
-    padding-left: 20px;
-    color: white;
-    font-size: 1.3em;
-    float: left;
-}
-
-.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
-    color: white;
-    text-decoration: none;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: #55acee;
-    transition: background-color 0.4s ease;
-}
-
-.navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #66bdff;
+canvas {
+    margin: 1rem 0;
+    border: solid gray 1px;
 }
 
 .mainForm {
@@ -75,87 +36,14 @@ nav:nth-child(1) {
     margin-top: 14px;
     font-size: 1.2em;
     width: 100px;
-    background-color: #55acee;
+    background-color: #259421;
     border-radius: 2px;
-    border-color: #66acee;
+    border-color: #1c6c1b;
     padding: 3px 0px;
     color: white;
     text-decoration: none;
 }
 
-.formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
-    color: white;
-}
-
-.formSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-#user, #pass, #pass2 {
-    text-align: center;
-    font-size: 1.1em;
-    width: 180px;
-    border-radius: 6px;
-}
-
-#user:focus, #pass:focus, #pass2:focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 1px #55acee;
-}
-
 .hidden {
     display: none;
-}
-
-#error {
-    top: 250px;
-    width: 250px;
-    height: 650px;
-    position: absolute;
-    z-index: 200;
-    right: 0px;
-    overflow: hidden;
-}
-
-#error h3 {
-    width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 20px;
-}
-
-#speech {
-    height: 120px;
-    width: 250px;
-    z-index:300;
-}
-
-#errorMessage {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: red;
-    font-style: italic;
-}
-
-#car {
-    z-index: 225;
-    margin-top: -20px;
-    margin-left: 135px;
-    height: 450px;
-    width: 300px;
-    -ms-transform: rotate(210deg);
-    -webkit-transform: rotate(210deg); 
-    transform: rotate(210deg);
-}
-
-/* STYLES THAT I HAVE WRITTEN MYSELF */
-#game-content {
-    width: 100%;
-    text-align: center;
-}
-
-canvas {
-    margin: 1rem 0;
-    border: solid gray 1px;
 }

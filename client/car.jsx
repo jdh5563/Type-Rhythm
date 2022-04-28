@@ -35,7 +35,7 @@ const CarForm = props => {
             <input id='greenSkin' type='radio' name='skins' value='/assets/img/cargreen.png'/>
             <label htmlFor='greenSkin'>Green </label>
             <input id='_csrf' type='hidden' name='_csrf' value={props.csrf} />
-            <input className='makeCarSubmit' type='submit' value='Change Skin' />
+            <input className='raceSubmit' type='submit' value='Change Skin' />
         </form>
     )
 };
@@ -67,7 +67,8 @@ const init = async () => {
 
     isPremium = await fetch('/premium').then(res => res.json()).then(premium => premium.premium);
 
-    const premiumButton = document.getElementById('premiumButton');
+    const navbar = document.querySelector('nav-bar');
+    const premiumButton = navbar.shadowRoot.lastElementChild.lastElementChild.firstElementChild.lastElementChild;
 
     if(!isPremium) {
         premiumButton.addEventListener('click', async e => {

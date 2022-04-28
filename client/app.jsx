@@ -85,7 +85,7 @@ const LobbyCreate = props => {
             method="POST"
             >
                 <div>
-                    <input type='submit' value='Create Race'></input>
+                    <input className='raceSubmit' type='submit' value='Create Race'></input>
                 </div>
                 <input id='_csrf' type='hidden' name='_csrf' value={props.csrf} />
             </form>
@@ -97,7 +97,7 @@ const LobbyCreate = props => {
             >
                 <div>
                     <input id='raceCode' type='text' placeholder='Race Code'></input>
-                    <input type='submit' value='Join Race'></input>
+                    <input className='raceSubmit' type='submit' value='Join Race'></input>
                 </div>   
                 <input id='_csrf' type='hidden' name='_csrf' value={props.csrf} />
             </form>
@@ -126,7 +126,7 @@ const Lobby = props => {
             action='/startRace'
             method='POST'
             >
-                <input id='startButton' type='submit' value='Start Race'></input>
+                <input className='raceSubmit' id='startButton' type='submit' value='Start Race'></input>
             </form>
             <form id='leaveForm'
             name='leaveForm'
@@ -134,7 +134,7 @@ const Lobby = props => {
             action='/leaveRace'
             method='POST'
             >
-                <input id='leaveButton' type='submit' value='Leave Lobby'></input>
+                <input className='raceSubmit' id='leaveButton' type='submit' value='Leave Lobby'></input>
                 <input id='_csrf' type='hidden' name='_csrf' value={props.csrf} />
             </form>
         </div>
@@ -166,7 +166,8 @@ const init = async () => {
 
     const isPremium = await fetch('/premium').then(res => res.json()).then(premium => premium.premium);
 
-    const premiumButton = document.getElementById('premiumButton');
+    const navbar = document.querySelector('nav-bar');
+    const premiumButton = navbar.shadowRoot.lastElementChild.lastElementChild.firstElementChild.lastElementChild;
 
     if(!isPremium) {
         premiumButton.addEventListener('click', async e => {

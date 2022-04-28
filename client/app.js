@@ -110,7 +110,7 @@ const init = officialParagraph => {
   ctx = canvas.getContext('2d');
 
   canvas.width = window.innerWidth * 0.6;
-  canvas.height = canvas.clientWidth * 0.69;
+  canvas.height = canvas.clientWidth * 0.5;
 
   ctx.save();
   ctx.fillStyle = 'white';
@@ -140,7 +140,7 @@ const init = officialParagraph => {
 
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth * 0.6;
-    canvas.height = canvas.clientWidth * 0.69;
+    canvas.height = canvas.clientWidth * 0.5;
 
     ctx.save();
     ctx.font = '16px Arial';
@@ -224,12 +224,13 @@ const handleInput = async e => {
 
       const wpm = Math.round(numWords / (endTime / 60000));
 
-      const finishText = `You got ${standing} place!
-                        You type ${wpm} wpm!`;
+      const finishText = `You got ${standing} place!`;
+      const wpmText = `You type ${wpm} wpm!`;
 
       ctx.save();
       ctx.font = '48px Arial';
-      drawText(ctx, finishText, canvas.width * 0.15, canvas.height * 0.5, 60, canvas.width - 20);
+      drawText(ctx, finishText, canvas.width * 0.15, canvas.height * 0.5, 60, canvas.width * 0.8);
+      drawText(ctx, wpmText, canvas.width * 0.15, canvas.height * 0.5 + 60, 60, canvas.width * 0.8);
       ctx.restore();
     }
   }

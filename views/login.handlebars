@@ -6,22 +6,17 @@
   <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <script src="/assets/loginNav.js" type="module"></script>
 </head>
 <body>
-  <nav>
-    <div class="navlink"><a id="loginButton" href="/login">Login</a></div>
-    <div class="navlink"><a id="signupButton" href="/signup">Sign up</a></div>
-  </nav>
+  <login-nav class="mb-6"></login-nav>
+
+    <div class="notification is-danger is-light mt-6 hidden">
+    </div>
   
-  <section id="content">
+  <section id="content" class="content mt-6"></section>
 
-  </section>
-
-  <div id="error" class='hidden'>
-    <img id="speech" src="/assets/img/speech.png" alt="speech box"/>
-    <h3><span id="errorMessage"></span></h3>
-    <img id="car" src="assets/img/cardefault.png" alt="car"/>
-  </div>
   <script src="/assets/loginBundle.js"></script>
 </body>
 </html>

@@ -34,7 +34,9 @@ const redisClient = redis.createClient({
   legacyMode: true,
   url: redisURL,
 });
+console.log('redis connecting...');
 redisClient.connect().catch(console.error);
+console.log('redic connected!');
 
 const app = express();
 
